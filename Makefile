@@ -23,3 +23,18 @@ DOCKER_CAPS := --privileged
 .PHONY: run
 run:
 	docker run -it --rm $(DOCKER_CAPS) $(DOCKER_VOLUMES) --workdir /usr/share/bcc/ $(IMAGETAG)
+
+IMAGETAGTRUSTY := $(IMAGETAG):trusty
+
+.PHONY: build.trusty
+build.trusty:
+	docker build -f Dockerfile.trusty -t $(IMAGETAGTRUSTY) .
+
+.PHONY: push.trusty
+push.trusty:
+	docker push $(IMAGETAGTRUSTY)
+
+.PHONY: run.trusty
+run.trusty:
+	docker run -it --rm $(DOCKER_CAPS) $(DOCKER_VOLUMES) --workdir /usr/share/bcc/ $(IMAGETAGTRUSTY)
+
