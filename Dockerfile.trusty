@@ -6,9 +6,9 @@ RUN set -ex; \
   apt-get update -y; \
   DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
-    bcc-tools
-    libbcc-examples
-    libelf1
+    bcc-tools \
+    libbcc-examples \
+    libelf1;
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
