@@ -1,5 +1,5 @@
 REPO := zlim/bcc
-TAGS := xenial trusty
+TAGS := trusty xenial bionic
 
 UNAMER := $(shell uname -r)
 HOST_DIRS := /lib/modules/$(UNAMER) /usr/src/linux-headers-$(UNAMER)
