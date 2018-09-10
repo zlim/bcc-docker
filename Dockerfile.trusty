@@ -1,5 +1,5 @@
 FROM ubuntu:trusty
-MAINTAINER Zi Shen Lim <zlim.lnx@gmail.com>
+LABEL maintainer="Zi Shen Lim <zlim.lnx@gmail.com>"
 
 RUN set -ex; \
   echo "deb [trusted=yes] http://repo.iovisor.org/apt/trusty trusty-nightly main" > /etc/apt/sources.list.d/iovisor.list; \
