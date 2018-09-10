@@ -1,12 +1,5 @@
-IMAGETAG := zlim/bcc
-
-.PHONY: build
-build:
-	docker build -t $(IMAGETAG) .
-
-.PHONY: push
-push:
-	docker push $(IMAGETAG)
+REPO := zlim/bcc
+TAGS := xenial trusty
 
 UNAMER := $(shell uname -r)
 HOST_DIRS := /lib/modules/$(UNAMER) /usr/src/linux-headers-$(UNAMER)
@@ -20,21 +13,27 @@ DOCKER_VOLUMES := $(addprefix -v ,$(DOCKER_VOLUMES))
 #DOCKER_CAPS := $(addprefix --cap-add ,$(DOCKER_CAP_ADD))
 DOCKER_CAPS := --privileged
 
+define ADD_TARGET
+build: build.${1}
+.PHONY: build.${1}
+build.${1}:
+	docker build -t $(REPO):${1} -f Dockerfile.${1} .
+
+push: push.${1}
+.PHONY: push.${1}
+push.${1}:
+	docker push $(REPO):${1}
+
+.PHONY: run.${1}
+run.${1}:
+	docker run -it --rm $(DOCKER_CAPS) $(DOCKER_VOLUMES) --workdir /usr/share/bcc/ $(REPO):${1}
+endef #ADD_TARGET
+
+.PHONY: build push
+$(foreach TAG,$(TAGS),\
+	$(eval $(call ADD_TARGET,${TAG})))
+
 .PHONY: run
 run:
-	docker run -it --rm $(DOCKER_CAPS) $(DOCKER_VOLUMES) --workdir /usr/share/bcc/ $(IMAGETAG)
-
-IMAGETAGTRUSTY := $(IMAGETAG):trusty
-
-.PHONY: build.trusty
-build.trusty:
-	docker build -f Dockerfile.trusty -t $(IMAGETAGTRUSTY) .
-
-.PHONY: push.trusty
-push.trusty:
-	docker push $(IMAGETAGTRUSTY)
-
-.PHONY: run.trusty
-run.trusty:
-	docker run -it --rm $(DOCKER_CAPS) $(DOCKER_VOLUMES) --workdir /usr/share/bcc/ $(IMAGETAGTRUSTY)
+	echo "Run targets are: $(addprefix run.,$(TAGS))"
 
