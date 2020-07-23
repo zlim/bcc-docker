@@ -26,7 +26,7 @@ push.${1}:
 
 .PHONY: run.${1}
 run.${1}:
-	docker run -it --rm $(DOCKER_CAPS) $(DOCKER_VOLUMES) --workdir /usr/share/bcc/ $(REPO):${1}
+	docker run -it --rm $(DOCKER_CAPS) $(DOCKER_VOLUMES) $(REPO):${1}
 endef #ADD_TARGET
 
 .PHONY: build push
