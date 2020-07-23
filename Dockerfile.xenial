@@ -13,5 +13,7 @@ RUN set -ex; \
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
+WORKDIR /usr/share/bcc/tools
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash"]
